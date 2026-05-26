@@ -1,0 +1,1194 @@
+{
+  "apiVersion": "dashboard.grafana.app/v2",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "aeurra0e63ym8f12a"
+  },
+  "spec": {
+    "annotations": [
+      {
+        "kind": "AnnotationQuery",
+        "spec": {
+          "builtIn": true,
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations \u0026 Alerts",
+          "query": {
+            "datasource": {
+              "name": "-- Grafana --"
+            },
+            "group": "grafana",
+            "kind": "DataQuery",
+            "spec": {},
+            "version": "v0"
+          }
+        }
+      }
+    ],
+    "cursorSync": "Crosshair",
+    "description": "",
+    "editable": true,
+    "elements": {
+      "panel-1": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "count(count by (cluster, node) (kube_node_info)) by (cluster)",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{cluster}}",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "count(kube_namespace_created) by (cluster)",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{namespace}}",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "B"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "100 *\navg by (cluster) (\n  sum by (instance, cpu, cluster) (\n    rate(node_cpu_seconds_total{mode!~\"idle|iowait|steal\", cluster!=\"\"}[$__rate_interval])\n  )\n)",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "CPU",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "C"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "100 *\nsum by (cluster) (\n  node_memory_MemTotal_bytes{cluster!=\"\"} \n  - \n  node_memory_MemAvailable_bytes{cluster!=\"\"}\n)\n/\nsum by (cluster) (\n  node_memory_MemTotal_bytes{cluster!=\"\"}\n)",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "MEMORY",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "D"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": true,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "avg(sum by (core) (rate(windows_cpu_time_total{mode!=\"idle\", cluster=~\"$cluster\"}[$__rate_interval])))",
+                        "instant": false,
+                        "legendFormat": "__auto",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "G"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "100 *\nsum by (cluster) (\n  kube_pod_container_resource_requests{resource=\"cpu\", cluster!=\"\"}\n)\n/\nsum by (cluster) (\n  kube_node_status_capacity{cluster!=\"\", resource=\"cpu\"}\n)",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "__auto",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "H"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "100 *\nsum by (cluster) (\n  kube_pod_container_resource_requests{resource=\"memory\", cluster!=\"\"}\n)\n/\nsum by (cluster) (\n  kube_node_status_capacity{cluster!=\"\", resource=\"memory\"}\n)",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{Memory Request %}}",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "I"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "count by (cluster) (\n  ALERTS{cluster!=\"\", alertstate=\"firing\"}\n)",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{Memory Request %}}",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "E"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "sum by (cluster) (\n  max by (cluster, instance) (\n    node_memory_MemTotal_bytes{cluster!=\"\", job=\"node-exporter\"}\n  )\n) / 1024 / 1024 / 1024",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "__auto",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "Total Memory"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": true,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "sum by (cluster) (\n  max by (cluster, instance) (\n    node_memory_MemTotal_bytes{cluster!=\"\", job=\"node-exporter\"}\n    - node_memory_MemAvailable_bytes{cluster!=\"\", job=\"node-exporter\"}\n  )\n) / 1024 / 1024 / 1024",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "__auto",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "Memory Used"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "sum by (cluster) (\n  max by (cluster, instance) (\n    node_filesystem_size_bytes{mountpoint=\"/\", fstype!=\"tmpfs\", job=\"node-exporter\", cluster!=\"\"}\n  )\n) / 1024 / 1024 / 1024",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "__auto",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "Total Disk (GB)"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": true,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "sum by (cluster) (\n  max by (cluster, instance) (\n    node_filesystem_size_bytes{mountpoint=\"/\", fstype!=\"tmpfs\", job=\"node-exporter\", cluster!=\"\"}\n    - node_filesystem_avail_bytes{mountpoint=\"/\", fstype!=\"tmpfs\", job=\"node-exporter\", cluster!=\"\"}\n  )\n) / 1024 / 1024 / 1024",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "Auto",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "Disk Used"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "avg by (cluster) (\n  (1 - node_filesystem_avail_bytes{mountpoint=\"/\", fstype!=\"tmpfs\", job=\"node-exporter\", cluster!=\"\"}\n  / node_filesystem_size_bytes{mountpoint=\"/\", fstype!=\"tmpfs\", job=\"node-exporter\", cluster!=\"\"})\n  * 100\n)",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "__auto",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "Disk Usage in Percent"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": [
+                {
+                  "group": "joinByField",
+                  "kind": "Transformation",
+                  "spec": {
+                    "options": {
+                      "byField": "cluster",
+                      "mode": "outer"
+                    }
+                  }
+                },
+                {
+                  "group": "groupBy",
+                  "kind": "Transformation",
+                  "spec": {
+                    "options": {
+                      "fields": {
+                        "(sum(kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\".*\"}) / sum(machine_cpu_cores))*100": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "CPU": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "CPU ": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "CPU Request %": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "CPU Usage": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "CPU Usage %": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Cluster": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "LDC": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Memory Request %": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Memory Usage": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Memory Usage %": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Namespace": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Nodes": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Pods": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Time": {
+                          "aggregations": []
+                        },
+                        "Time 2": {
+                          "aggregations": []
+                        },
+                        "Value": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Value #A": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Value #B": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Value #C": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Value #D": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Value #Disk Usage in Percent": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Value #Disk Used": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Value #E": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Value #F": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Value #H": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Value #I": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Value #Memory Used": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Value #Total Disk (GB)": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "Value #Total Memory": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "availability_zone": {
+                          "aggregations": []
+                        },
+                        "cluster": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "count(count by (node) (kube_node_info{ cluster=~\".*\"}))": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "count(kube_namespace_created{ cluster=~\".*\"})": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "k8s_cluster": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "namespace": {
+                          "aggregations": []
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "group": "organize",
+                  "kind": "Transformation",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Time": true,
+                        "Value #F": true,
+                        "__name__": true,
+                        "cluster": false,
+                        "cluster 2": true,
+                        "component": true,
+                        "env": true,
+                        "instance": true,
+                        "job": true,
+                        "k8s_cluster": false,
+                        "prometheus": true
+                      },
+                      "includeByName": {},
+                      "indexByName": {
+                        "Value #A": 1,
+                        "Value #B": 2,
+                        "Value #C": 4,
+                        "Value #D": 8,
+                        "Value #Disk Usage in Percent": 11,
+                        "Value #Disk Used": 10,
+                        "Value #E": 12,
+                        "Value #H": 3,
+                        "Value #I": 7,
+                        "Value #Memory Used": 6,
+                        "Value #Total Disk (GB)": 9,
+                        "Value #Total Memory": 5,
+                        "cluster": 0
+                      },
+                      "orderByMode": "manual",
+                      "renameByName": {
+                        "(sum(kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\".*\"}) / sum(machine_cpu_cores{ cluster=~\".*\"}))*100": "CPU Request %",
+                        "(sum(kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\".*\"}) / sum(machine_cpu_cores{cluster=~\".*\"}))*100": "Memory Request %",
+                        "(sum(kube_pod_container_resource_requests{resource=\"memory\", cluster=~\".*\"}) / sum(machine_memory_bytes{ cluster=~\".*\"}))*100": "Memory Request %",
+                        "Value": "Nodes",
+                        "Value #A": "Nodes",
+                        "Value #B": "Namespace",
+                        "Value #C": "CPU Usage %",
+                        "Value #D": "Memory Usage %",
+                        "Value #Disk Usage in Percent": "Disk Usage %",
+                        "Value #Disk Used": "Disk Used (GB)",
+                        "Value #E": "Alerts",
+                        "Value #H": "CPU Request %",
+                        "Value #I": "Memory Request %",
+                        "Value #Memory Used": "Memory Used (GB)",
+                        "Value #Total Disk (GB)": "Total Disk (GB)",
+                        "Value #Total Memory": "Total Memory (GB)",
+                        "__name__": "",
+                        "cluster": "Cluster",
+                        "cluster 1": "Cluster",
+                        "cluster 2": "Cluster",
+                        "count(count by (node) (kube_node_info{ cluster=~\".*\"}))": "Nodes",
+                        "k8s_cluster": "Cluster",
+                        "sum(kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\".*\"}) / sum(machine_cpu_cores{ cluster=~\".*\"})": "CPU Request %"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "description": "",
+          "id": 1,
+          "links": [],
+          "title": "",
+          "vizConfig": {
+            "group": "table",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "right",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": true,
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false,
+                    "wrapHeaderText": false,
+                    "wrapText": false
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "dark-green",
+                        "value": 0
+                      },
+                      {
+                        "color": "dark-green",
+                        "value": 70
+                      },
+                      {
+                        "color": "#EAB839",
+                        "value": 80
+                      },
+                      {
+                        "color": "dark-red",
+                        "value": 90
+                      }
+                    ]
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "CPU Usage %"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "mode": "gradient",
+                          "type": "gauge",
+                          "valueDisplayMode": "color"
+                        }
+                      },
+                      {
+                        "id": "max",
+                        "value": 100
+                      },
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "green",
+                              "value": 0
+                            },
+                            {
+                              "color": "#EAB839",
+                              "value": 60
+                            },
+                            {
+                              "color": "red",
+                              "value": 80
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Memory Usage %"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "mode": "gradient",
+                          "type": "gauge",
+                          "valueDisplayMode": "color"
+                        }
+                      },
+                      {
+                        "id": "max",
+                        "value": 100
+                      },
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "green",
+                              "value": 0
+                            },
+                            {
+                              "color": "#EAB839",
+                              "value": 60
+                            },
+                            {
+                              "color": "red",
+                              "value": 80
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 179
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Nodes"
+                    },
+                    "properties": [
+                      {
+                        "id": "links",
+                        "value": [
+                          {
+                            "targetBlank": true,
+                            "title": "Node Summary",
+                            "url": "d/dafee5lj181iiob/node-details?var-cluster=${__data.fields.cluster}\u0026${__url_time_range}\n"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "markdown"
+                        }
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 97
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Namespace"
+                    },
+                    "properties": [
+                      {
+                        "id": "links",
+                        "value": [
+                          {
+                            "targetBlank": true,
+                            "title": "namespace",
+                            "url": "/d/ceuu67jhlshdsabc/namespace-summary?var-cluster=${__data.fields.cluster}\u0026${__url_time_range}"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "markdown"
+                        }
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 130
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "CPU Request %"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "mode": "gradient",
+                          "type": "gauge",
+                          "valueDisplayMode": "color"
+                        }
+                      },
+                      {
+                        "id": "max",
+                        "value": 100
+                      },
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "green",
+                              "value": 0
+                            },
+                            {
+                              "color": "#EAB839",
+                              "value": 60
+                            },
+                            {
+                              "color": "red",
+                              "value": 80
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Memory Request %"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "mode": "gradient",
+                          "type": "gauge",
+                          "valueDisplayMode": "color"
+                        }
+                      },
+                      {
+                        "id": "max",
+                        "value": 100
+                      },
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "green",
+                              "value": 0
+                            },
+                            {
+                              "color": "#EAB839",
+                              "value": 60
+                            },
+                            {
+                              "color": "red",
+                              "value": 80
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 192
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Alerts"
+                    },
+                    "properties": [
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "green",
+                              "value": 0
+                            },
+                            {
+                              "color": "red",
+                              "value": 1
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-text"
+                        }
+                      },
+                      {
+                        "id": "custom.filterable"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Cluster"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 148
+                      },
+                      {
+                        "id": "links",
+                        "value": [
+                          {
+                            "targetBlank": true,
+                            "title": "cluster details",
+                            "url": "/d/k8s_views_global/k8s-cluster-detail-view?var-cluster=${__data.fields.cluster}\u0026${__url_time_range}"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Total Memory (GB)"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 162
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Memory Used (GB)"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 164
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Disk Usage %",
+                      "scope": "series"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "mode": "gradient",
+                          "type": "gauge",
+                          "valueDisplayMode": "color"
+                        }
+                      },
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "green",
+                              "value": 0
+                            },
+                            {
+                              "color": "#EAB839",
+                              "value": 60
+                            },
+                            {
+                              "color": "red",
+                              "value": 80
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "id": "unit",
+                        "value": "percent"
+                      },
+                      {
+                        "id": "max",
+                        "value": 100
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Disk Used (GB)"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 140
+                      },
+                      {
+                        "id": "unit",
+                        "value": "decgbytes"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Total Disk (GB)"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 147
+                      },
+                      {
+                        "id": "unit",
+                        "value": "decgbytes"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "options": {
+                "cellHeight": "md",
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": false,
+                    "displayName": "Cluster"
+                  }
+                ]
+              }
+            },
+            "version": "13.0.1"
+          }
+        }
+      },
+      "panel-2": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "",
+          "id": 2,
+          "links": [],
+          "title": "",
+          "vizConfig": {
+            "group": "text",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              },
+              "options": {
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "\u003cdiv style=\"background-color: #063970; padding: 20px; text-align: center; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\"\u003e\n  \u003ch1 style=\"color: #ecf0f1; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 32px; margin: 0; letter-spacing: 2px;\"\u003e\n    🌍 \u003cstrong style=\"font-weight: 900;\"\u003eCluster\u003c/strong\u003e\n  \u003c/h1\u003e\n\u003c/div\u003e",
+                "mode": "markdown"
+              }
+            },
+            "version": "13.0.1"
+          }
+        }
+      }
+    },
+    "layout": {
+      "kind": "GridLayout",
+      "spec": {
+        "items": [
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-2"
+              },
+              "height": 3,
+              "width": 24,
+              "x": 0,
+              "y": 0
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-1"
+              },
+              "height": 33,
+              "width": 24,
+              "x": 0,
+              "y": 3
+            }
+          }
+        ]
+      }
+    },
+    "links": [
+      {
+        "asDropdown": false,
+        "icon": "external link",
+        "includeVars": false,
+        "keepTime": false,
+        "tags": [],
+        "targetBlank": true,
+        "title": "Source (GitHub)",
+        "tooltip": "View source file in repository",
+        "type": "link",
+        "url": "https://github.com/ot-client/o11y-k8s-setup-template/blob/main/grafana/dashboards/OpsTree/dev/Software/Kubernetes/k8s-node-details.json"
+      }
+    ],
+    "liveNow": false,
+    "preload": true,
+    "tags": [
+      "ot-dashboard",
+      "k8s",
+      "kubernetes"
+    ],
+    "timeSettings": {
+      "autoRefresh": "5s",
+      "autoRefreshIntervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "fiscalYearStartMonth": 0,
+      "from": "now-7d",
+      "hideTimepicker": false,
+      "timezone": "browser",
+      "to": "now"
+    },
+    "title": "Clusters List  Summary",
+    "variables": [
+      {
+        "kind": "DatasourceVariable",
+        "spec": {
+          "allowCustomValue": true,
+          "current": {
+            "text": "VictoriaMetrics",
+            "value": "victoriametrics"
+          },
+          "hide": "hideVariable",
+          "includeAll": false,
+          "multi": false,
+          "name": "datasource",
+          "options": [],
+          "pluginId": "prometheus",
+          "refresh": "onDashboardLoad",
+          "regex": "VictoriaMetrics",
+          "skipUrlSync": false
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "allowCustomValue": true,
+          "current": {
+            "text": "buildpiper",
+            "value": "buildpiper"
+          },
+          "definition": "label_values(cluster)",
+          "hide": "hideVariable",
+          "includeAll": false,
+          "multi": false,
+          "name": "cluster",
+          "options": [],
+          "query": {
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "group": "prometheus",
+            "kind": "DataQuery",
+            "spec": {
+              "qryType": 1,
+              "query": "label_values(cluster)",
+              "refId": "PrometheusVariableQueryEditor-VariableQuery"
+            },
+            "version": "v0"
+          },
+          "refresh": "onDashboardLoad",
+          "regex": "",
+          "regexApplyTo": "value",
+          "skipUrlSync": false,
+          "sort": "disabled"
+        }
+      }
+    ]
+  }
+}

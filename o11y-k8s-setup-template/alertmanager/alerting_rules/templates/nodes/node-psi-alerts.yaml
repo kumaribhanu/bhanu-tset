@@ -1,0 +1,85 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"operator.victoriametrics.com/v1beta1","kind":"VMRule","metadata":{"annotations":{},"labels":{"app":"node-psi-alerts","managed-by":"devops"},"name":"node-psi-alerts","namespace":"monitoring"},"spec":{"groups":[{"interval":"30s","name":"node-psi-alerts","rules":[{"alert":"NodeCPUPressureHigh","annotations":{"dashboard_url":"https://grafana.opstree.net/explore","description":"Node {{ $labels.instance }} is experiencing high CPU pressure.\nProcesses are waiting for CPU resources.\n","runbook_url":"https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md","summary":"High CPU Pressure on node"},"expr":"rate(node_pressure_cpu_waiting_seconds_total[5m]) \u003e 0.2\n","for":"5m","labels":{"alert":"kubernetes","channel":"slack","severity":"warning","team":"devops"}},{"alert":"NodeMemoryPressureHigh","annotations":{"dashboard_url":"https://grafana.opstree.net/explore","description":"Node {{ $labels.instance }} is under high memory pressure.\nProcesses are waiting due to memory contention.\n","runbook_url":"https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md","summary":"High Memory Pressure on node"},"expr":"rate(node_pressure_memory_waiting_seconds_total[5m]) \u003e 0.1\n","for":"5m","labels":{"alert":"kubernetes","channel":"slack","severity":"critical","team":"devops"}},{"alert":"NodeDiskPressureHigh","annotations":{"dashboard_url":"https://grafana.opstree.net/explore","description":"Node {{ $labels.instance }} is under high disk I/O pressure.\nProcesses are waiting on disk operations.\n","runbook_url":"https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md","summary":"High Disk I/O Pressure on node"},"expr":"rate(node_pressure_io_waiting_seconds_total[5m]) \u003e 0.1\n","for":"5m","labels":{"alert":"kubernetes","channel":"slack","severity":"warning","team":"devops"}}]}]}}
+  creationTimestamp: "2026-04-14T06:39:24Z"
+  generation: 3
+  labels:
+    app: node-psi-alerts
+    managed-by: devops
+  name: node-psi-alerts
+  namespace: monitoring
+  resourceVersion: "34857600"
+  uid: 9c1b3456-1f46-41ac-a119-f9dcb2b9c0ce
+spec:
+  groups:
+  - interval: 30s
+    name: node-psi-alerts
+    rules:
+    - alert: NodeCPUPressureHigh
+      annotations:
+        dashboard_url: https://grafana.opstree.net/explore
+        description: |
+          Node {{ $labels.instance }} in DC {{ $labels.dc }} is experiencing high CPU pressure.
+          Processes are waiting for CPU resources.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md
+        summary: High CPU Pressure on node {{ $labels.instance }} ({{ $labels.dc }})
+      expr: |
+        rate(node_pressure_cpu_waiting_seconds_total[5m]) > 0.2
+      for: 5m
+      labels:
+        alert: kubernetes
+        channel: slack
+        severity: warning
+        team: devops
+    - alert: NodeMemoryPressureHigh
+      annotations:
+        dashboard_url: https://grafana.opstree.net/explore
+        description: |
+          Node {{ $labels.instance }} in DC {{ $labels.dc }} is under high memory pressure.
+          Processes are waiting due to memory contention.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md
+        summary: High Memory Pressure on node {{ $labels.instance }} ({{ $labels.dc
+          }})
+      expr: |
+        rate(node_pressure_memory_waiting_seconds_total[5m]) > 0.1
+      for: 5m
+      labels:
+        alert: kubernetes
+        channel: slack
+        severity: critical
+        team: devops
+    - alert: NodeDiskPressureHigh
+      annotations:
+        dashboard_url: https://grafana.opstree.net/explore
+        description: |
+          Node Disk I/O Pressure High
+
+          Instance  : {{ $labels.instance }}
+          Node Name : {{ $labels.nodename }}
+          DC        : {{ $labels.dc }}
+          VALUE     : {{ $value | printf "%.4f" }}
+          Threshold : 0.1
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md
+        summary: 'High Disk Pressure on {{ $labels.nodename }} ({{ $labels.instance
+          }}) | DC: {{ $labels.dc }}'
+      expr: |
+        rate(node_pressure_io_waiting_seconds_total[5m]) > 0.1
+      for: 5m
+      labels:
+        alert: kubernetes
+        channel: ldc-infra-alerts
+        severity: warning
+        team: devops
+status:
+  conditions:
+  - lastTransitionTime: "2026-04-14T06:39:24Z"
+    lastUpdateTime: "2026-05-14T06:03:57Z"
+    observedGeneration: 3
+    reason: ConfigParsedAndApplied
+    status: "True"
+    type: vm.monitoring.vmalert.victoriametrics.com/Applied
+  observedGeneration: 3
+  updateStatus: operational
